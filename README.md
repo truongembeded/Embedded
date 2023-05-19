@@ -1,5 +1,7 @@
-Compiler
-    Quy trình compiler là quá trình chuyển đổi từ ngôn ngữ bậc cao sang ngôn ngữ đích máy để máy tính có thể hiểu và thực thi. Chương trình được viết bằng C muốn chạy được trên máy tính phải qua quá trình biên dịch để chuyển đổi từ dạng mã nguồn sang dạng mã thực thi.
+Compiler 
+    
+    •   là quá trình chuyển đổi từ ngôn ngữ bậc cao sang ngôn ngữ đích máy để máy tính có thể hiểu và thực thi. Chương trình được viết bằng C muốn chạy được trên máy tính phải qua quá trình biên dịch để chuyển đổi từ dạng mã nguồn sang dạng mã thực thi.
+
     •	Giai đoàn tiền xử lý (Pre-processor)
     •	Giai đoạn dịch NNBC sang Asembly (Compiler)
     •	Giai đoạn dịch asembly sang ngôn ngữ máy (Asember)
@@ -22,17 +24,18 @@ Compiler
     •   Tất cả liên kết lại với nhau thành một chương trình (executable hay .exe) thống nhất.
 
 Phân Vùng Nhớ
+
     •   Phân vùng test: chỉ read, chỉ khai báo hằng số (const) và con trỏ xâu (char *arr = "hello")
     •   Phân vùng data: biến global and static with value khác 0. khi nạp code sẽ tồn tại cho đến khi tắt nguồn vđk
     •   Phân vùng bss: ngược lại với data, khi được gán lại giá trị thì nó vẫn ở phân vùng bss
     •   Stack: biến local and input parameter, được giải phóng khi ra khỏi block code
     ví dụ
+    
         int tong (int a, int b){
             int c;
             c = a + b;
             return c;
         }
-
         int main{
             tong(7, 8); //khi thoát khỏi hàm sẽ được giải phóng hết
 
@@ -40,31 +43,40 @@ Phân Vùng Nhớ
         }
 
 Marco 
+
     •   Không phải hàm củng không phải biến mà là 1 định nghĩa diễn ra trong quá trình tiền xử lí. Bản chất của marco là thay thế đoạn code được khai báo macro vào bất cứ chỗ nào xuất hiện macro đó nên chương trình sẽ dài ra mà time chạy ctring lại tối ưu hơn.
 
 Inline 
+
     •   Được xử lý bởi compiler, khi gặp từ khoá inline sẽ được biên dịch ra ngôn ngữ máy tính có thể hiểu rồi mới thay thế đoạn code đó vào hàm ngược lại với marco
 
 Function 
+
     •   Phải tạo một function call nên tốn thời gian nhưng code ngắn gọn hơn.
 
-Program counter là một bộ đếm của chương trình giống như vđk 8 bit bước nhảy của nó sẽ là 1 byte đầu tiên nó sẽ đếm 0x00 tiếp tục cho đến 0x08 tức là nó sẽ chạy qua từng ô nhớ rồi đọc giá trị ra
+Program counter 
 
-Stack pointer nó sẽ lưu địa chỉ của con trỏ xảy ra khi PC đang đếm mà nhảy sang địa chỉ khác thì stack pointer nó sẽ lưu địa chỉ tiếp theo của PC đang đếm và nhảy sang đếm địa chỉ tiếp theo đó đếm xong lấy quả rồi tiếp tục thực hiện chương trình.
+    •   là một bộ đếm của chương trình giống như vđk 8 bit bước nhảy của nó sẽ là 1 byte đầu tiên nó sẽ đếm 0x00 tiếp tục cho đến 0x08 tức là nó sẽ chạy qua từng ô nhớ rồi đọc giá trị ra
+
+Stack pointer 
+
+    •   nó sẽ lưu địa chỉ của con trỏ xảy ra khi PC đang đếm mà nhảy sang địa chỉ khác thì stack pointer nó sẽ lưu địa chỉ tiếp theo của PC đang đếm và nhảy sang đếm địa chỉ tiếp theo đó đếm xong lấy quả rồi tiếp tục thực hiện chương trình.
 
 Thao tác bit:
-    • AND(&) : 1 & 1 = 1 còn lại là 0
-    • NOT(~) : 0 -> 1 and 1 -> 0
-    • OR(|)  : 0 | 0 = 0 còn lại là 1
-    • XOR(^) : giống nhau thì thành 0(0 ^ 0 = 0) khác thì thành 1(0 ^ 1 = 1)
-    • <<     : dịch trái bao nhiêu bit thì lấy bấy nhiêu bit đưa thành 0 rồi đem qua phải
+
+    •   AND(&) : 1 & 1 = 1 còn lại là 0
+    •   NOT(~) : 0 -> 1 and 1 -> 0
+    •   OR(|)  : 0 | 0 = 0 còn lại là 1
+    •   XOR(^) : giống nhau thì thành 0(0 ^ 0 = 0) khác thì thành 1(0 ^ 1 = 1)
+    •   <<     : dịch trái bao nhiêu bit thì lấy bấy nhiêu bit đưa thành 0 rồi đem qua phải
             ví dụ : 0b11010101 << 2 = 0b01010100 ví dụ này ta lấy 2 bit 11 đổi thành 0 rồi đưa sang phải
-    • >>     : dịch phải bao nhiêu bit thì lấy bấy nhiêu bit đổi thành 0 rồi đưa sang trái
+    •   >>     : dịch phải bao nhiêu bit thì lấy bấy nhiêu bit đổi thành 0 rồi đưa sang trái
             ví dụ : 0b11010101 >> 3 = 0b00011010 ví dụ này ta lấy 3 bit 101 đổi thành 0 rồi đưa sang phải
 
 Hoạt động của vđk:
-    • Vđk 8 bit thì 1 port có thể đk được 8 chân tương đương với 8 bit (0b00000000) và 1 bit tương đương với 1 chân.
-    • Để mà vđk đk được các chân thì bên trong vđk chứ các transitor giống như các khoá k để đk được. thực nó chỉ có 2 mức điện áp 5v - 0 ngta sẽ sử dụng mã binary (bit 0 1) để đk chân có điện áp sẽ là bit 1 và chân không có điện là bit 0.
+
+    •   Vđk 8 bit thì 1 port có thể đk được 8 chân tương đương với 8 bit (0b00000000) và 1 bit tương đương với 1 chân.
+    •   Để mà vđk đk được các chân thì bên trong vđk chứ các transitor giống như các khoá k để đk được. thực nó chỉ có 2 mức điện áp 5v - 0 ngta sẽ sử dụng mã binary (bit 0 1) để đk chân có điện áp sẽ là bit 1 và chân không có điện là bit 0.
 
     
 
