@@ -12,7 +12,7 @@ Compiler
     •	Chỉ thị tiền xử lý (bắt đầu bằng #) cũng được xử lý
     2. Công đoạn dịch Ngôn Ngữ Bậc Cao sang Assembly
     •	Phân tích syntax của mã nguồn NNBC
-    •	Chuyển chúng sang dạng mã Assembly là một ngôn ngữ bậc thấp gần với tập lệnh của bộ vi xử lý.
+    •	Chuyển chúng sang dạng mã Assembly là một ngôn ngữ bậc thấp.
     3. Công đoạn dịch Assembly
     •	Dich chương trình => Sang mã máy 0 và 1
     •	Một tệp mã máy (.obj) sinh ra .
@@ -43,7 +43,7 @@ Phân Vùng Nhớ
 
 Marco 
 
-    •   Không phải hàm củng không phải biến mà là 1 định nghĩa diễn ra trong quá trình tiền xử lí. Bản chất của marco là thay thế đoạn code được khai báo macro vào bất cứ chỗ nào xuất hiện macro đó nên chương trình sẽ dài ra mà time chạy ctring lại tối ưu hơn.
+    •   Không phải hàm củng không phải biến mà là 1 định nghĩa diễn ra trong quá trình tiền xử lí. Bản chất của marco là thay thế đoạn code được khai báo macro vào bất cứ chỗ nào xuất hiện macro đó nên chương trình sẽ dài ra mà time chạy chương trìng lại tối ưu hơn.
 
 Inline 
 
@@ -78,6 +78,29 @@ Hoạt động của vđk:
     •   Để mà vđk đk được các chân thì bên trong vđk chứ các transitor giống như các khoá k để điều khiển được. 
     •   Nó chỉ có 2 mức điện áp 5v - 0 ngta sẽ sử dụng mã binary (bit 0 1) để điều khiển chân có điện áp sẽ là bit 1 và chân không có điện là bit 0.
 
+Struct:
+
+    •   là kiểu dữ liệu do mình tự định nghĩa..
+    •   Kích thước của một biến struct được xác định bởi tổng kích thước của các thành phần và bộ nhớ đệm của nó .
+
+Union:
+
+    •   Union là cấu trúc dữ liệu tương tự như struct, cho phép lưu trữ nhiều biến có cùng địa chỉ dùng chung
+    •   khi truyền data các giá trị sẽ bị ghi đè lên nhau và nó sẽ lấy giá trị cuối cùng
+    •   Kích thước của Union chính là kích thước của member lớn nhất 
+    •   Vì là địa chỉ dùng chung nên khi thay đổi giá trị của một member thì sẽ ảnh hưởng đến những member khác
+    •   Ứng dụng của Union chính là những trường hợp chỉ được chọn một để dùng thì sẽ sử dụng Union vì nó là bộ nhớ dùng chung nên sẽ đỡ tốn bộ nhớ
+
+Pointer:
+
+    •   Ví dụ: int a  = 10;
+        địa chỉ :        0x01
+        giá trị địa chỉ: 10
+    •   Biến con trỏ nó sẽ lưu địa chỉ của biến khác
+    •   Con trỏ NULL có địa chỉ và giá trị = 0
+    •   Khi khai báo 1 con trỏ bắt buộc phải gán giá trị, chưa sử dụng thì phải gán = NULL hoặc đã sử dụng rồi mà không sử dụng nữa củng phải gán bằng NULL
+    •   Con trỏ void lưu địa chỉ của bất kì kiểu dữ liệu nhưng không thể lấy giá trị của nó 
+    •   Con trỏ hàm cho phép chúng ta  gọi hàm thông qua con trỏ đó, giúp tăng tính linh hoạt và động dược trong việc xử lý hàm trong chương trình.
     
 
 
