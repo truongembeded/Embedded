@@ -51,17 +51,17 @@ void DigitalWrite(pins pin, digital result){
 
 
 int main() {
-   //uint8_t a =10;
+   uint8_t a =9;
    
    
-   DigitalWrite(PIN5, LOW);
-   DigitalWrite(PIN5, HIGH);
-   DigitalWrite(PIN5, LOW);
-   DigitalWrite(PIN5, HIGH);
-   DigitalWrite(PIN5, LOW);
-   printf("0b");
-   ReadByte(PORTA);
-
+   // DigitalWrite(PIN5, LOW);
+   // DigitalWrite(PIN5, HIGH);
+   // DigitalWrite(PIN5, LOW);
+   // DigitalWrite(PIN5, HIGH);
+   // DigitalWrite(PIN5, LOW);
+   // printf("0b");
+   //ReadByte(PORTA);
+ReadByte(a);
    return 0;
 }
 
