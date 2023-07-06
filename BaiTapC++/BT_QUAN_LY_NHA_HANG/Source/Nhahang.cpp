@@ -1,63 +1,32 @@
 #include<bits/stdc++.h>
-
+#include"Nhahang.h"
 using namespace std;
+
 /*
- * Function: MACRO PRINT_INFORMATION
- * Description: Macro phần hiển thị thông tin Danh Sách Món ăn
+ * Function: Method setTenMon
+ * Description: Đặt tên cho món ăn
  * Input:
- *   object - đối tượng cần hiển thị
+ *   tenmon - char*
  */
-#define PRINT_INFORMATION(Stt, object)                                                      \
-    printf(" %d\t| %d\t| %s\t\t|   %d\t\n", Stt, object.getId(),                           \
-           object.getTenMon(), object.getGia());                                            \
-
-/*
- * Function: MACRO DOWHILE_METHODMENU
- * Description: Macro sử dụng chức năng của từng method
- * Input:
- *   content - Nội dung chức năng của từng method
- */
-#define DOWHILE_METHODMENU(content)                            \
-    do                                                         \
-    {                                                          \
-        content                                                \
-        printf("- Nhan phim '0' => De Thoat chuc nang\n");     \
-        printf("- Nhan phim '1' => De tiep tuc chuc nang\n");  \
-        printf("Nhan Phim: ");                                 \
-        scanf("%d", &key);                                     \
-    } while (key == 1)
-
-/*-----------------------------------------------------CLASS FOOD--------------------------------------------------------*/
-/*
- * Function: Class Món ăn
- * Description: Chứa Property & Method sử dụng cho class Món ăn
- */
-class Food{
-    private:
-        int Id;
-        char TenMon[20];
-        int Gia;
-    public:
-        Food(char tenmon[], int gia);
-
-        void setTenMon(char tenmon[]);
-        void setGia(int gia);
-
-        int getId();
-        char* getTenMon();
-        int getGia(); 
-    
-};
-
-
 void Food::setTenMon(char tenmon[]){
     strcpy(Food::TenMon, tenmon) ;
 }
-
+/*
+ * Function: Method setGia
+ * Description: Đặt giá cho món ăn
+ * Input:
+ *   gia - int
+ */
 void Food::setGia(int gia){
     Gia = gia;
 }
-
+/*
+ * Function: Constructor Food
+ * Description: Khởi tạo dữ liệu cho mỗi món ăn
+ * Input:
+ *   tenmon - char* tên món ăn
+ *   gia - int giá món ăn
+ */
 Food::Food(char tenmon[], int gia){
     //// Tự động tạo ID tự động
     static uint8_t id = 100;
@@ -67,51 +36,58 @@ Food::Food(char tenmon[], int gia){
     Gia = gia;
 
 }
-
-
+/*
+ * Function: Method getId
+ * Description: Lấy ID của Món ăn
+ * Output:
+ *   Id - int
+ */
 int Food::getId(){
     return Id;
 }
-
-
-
+/*
+ * Function: Method getGia
+ * Description: Lấy giá của Món ăn
+ * Output:
+ *   Gia - int
+ */
 int Food::getGia(){
     return Gia;
 }
-
+/*
+ * Function: Method getTenMon
+ * Description: Lấy tên của Món ăn
+ * Output:
+ *   TenMon - char*
+ */
 char* Food::getTenMon(){
     return TenMon;
 }
-
-/*-----------------------------------------------------CLASS QUANLY--------------------------------------------------------*/
 /*
- * Function: Class Người Quản lý 
- * Description: Chứa Property & Method tương tác với class Food
+ * Function: Method setSoBan
+ * Description: Đặt số lượng bàn
  */
-class QuanLy{
-    private:
-        vector<Food> Database;
-        int Soban = 0;
-    public:
-
-        void setSoBan(int soban);
-        int getSoBan();
-        vector<Food> getListFood();
-        void ThemMon();
-        void SuaMon();
-        void XoaMon();
-        void DanhSachMon();
-};
-
 void QuanLy::setSoBan(int soban){
+    printf("Nhap so luong ban: ");
+    scanf("%d",&soban);
     this->Soban = soban;
 }
-
+/*
+ * Function: Method getSoBan
+ * Description: Lấy số lượng bàn
+ * Output:
+ *   Soban - int
+ */
 int QuanLy::getSoBan(){
     return Soban;
 }
-
-vector<Food> QuanLy::getListFood(){
+/*
+ * Function: Method getListFood
+ * Description: Lấy data danh sách món ăn đã tạo
+ * Output:
+ *   Database - list<Food>
+ */
+list<Food> QuanLy::getListFood(){
     return Database;
 }
 /*
@@ -126,19 +102,8 @@ void QuanLy::ThemMon(){
     DOWHILE_METHODMENU
     (
         cout<<"---THEM MON AN MOI---"<<endl;
-    do
-    {
-        printf("Nhap ten mon an: ");
-        scanf("%s", &TenMon);
-    } while (0);
-
-    do
-    {
-        
-        cout<<"Nhap Gia: ";
-        cin>>Gia;
-        cin.ignore();
-    } while (Gia < 0);
+        ENTER_INFORMATION("Nhap ten mon an: ", "%s", &TenMon, 0);
+        ENTER_INFORMATION("Nhap Gia: ", "%d", &Gia, Gia < 0);
 
     Food food(TenMon, Gia);
     Database.push_back(food);
@@ -156,19 +121,18 @@ void QuanLy::SuaMon(){
     int Gia;
     int id;
     bool Havefood = false;
-    if(Database.empty())
-    {
-        cout<<"Danh sach Mon An trong!\n";
-        cout<<"KHONG THE SUA MON!\n";
+    CHECK_ERROR
+    (
+        Database,
+        "Danh sach Mon An trong!\n",
+        "KHONG THE SUA MON!\n",
 
-    }else
-    {
         printf("\n-----------------DANH SACH MON AN------------\n");
                     printf("  STT\t| ID\t| Ten Mon\t|  Gia\n");
         uint8_t Stt = 1;           
         for (Food food : Database) 
         {
-            PRINT_INFORMATION(Stt, food);
+            PRINT_LIST(Stt, food);
             Stt++;
         }
         DOWHILE_METHODMENU
@@ -176,24 +140,18 @@ void QuanLy::SuaMon(){
             cout<<"--SUA MON AN THEO ID--"<<endl;
             cout <<"Nhap Id Mon an can SUA:";
             cin>> id; 
-            for(int i = 0; i < Database.size(); i++){
+            for (auto it = Database.begin(); it != Database.end(); ++it){
 
-                if(Database.at(i).getId() == id)
+                if(it->getId() == id)
                 {
-                    do
-                    {
-                        printf("Sua mon an:");
-                        scanf("%s", &TenMon);
-                    } while (0);
-                    do
-                    {
-                        cout<<"Sua Gia Tien:";
-                        cin>>Gia;
-                    } while (Gia < 0);
-                    Database.at(i).setTenMon(TenMon);
-                    Database.at(i).setGia(Gia);
+                    ENTER_INFORMATION("Sua mon an: ", "%s", &TenMon, 0);
+                    ENTER_INFORMATION("Sua Gia Tien: ", "%d", &Gia, Gia < 0);
+                    
+                    it->setTenMon(TenMon);
+                    it->setGia(Gia);
 
-                Havefood = 1;   
+                Havefood = true;   
+                cout<<"SUA MON AN THANH CONG!"<<endl;  
                 break;
                 };           
                 
@@ -204,7 +162,7 @@ void QuanLy::SuaMon(){
                 cout<<"KHoong tim thay mon an"<<endl;
             }
         );
-    };
+    );
 }
 /*
  * Function: XoaMon
@@ -217,17 +175,17 @@ void QuanLy::XoaMon(){
     int id;
     uint8_t key;
     
-    if(Database.empty()){
+    CHECK_ERROR(
+        Database,
+        "DANH SACH MON AN TRONG!",
+        "KHong THE XOA MON!",
 
-        cout<<"DANH SACH MON AN TRONG!"<<endl;
-        cout<<"KHong THE XOA MON!"<<endl;
-    }else{
         printf("\n-----------------DANH SACH MON AN------------\n");
                     printf("  STT\t| ID\t| Ten Mon\t|  Gia\n");
         uint8_t Stt = 1;           
         for (Food food : Database) 
         {
-            PRINT_INFORMATION(Stt, food);
+            PRINT_LIST(Stt, food);
             Stt++;
         }
 
@@ -236,14 +194,14 @@ void QuanLy::XoaMon(){
             printf("Nhap Id Mon An:");
             scanf("%d", &id);
 
-            for (int i = 0; i < Database.size(); i++)
+            for (auto it = Database.begin(); it != Database.end(); ++it) 
             {
-                if(Database.at(i).getId() == id){
+                if(it->getId() == id){
 
-                    Database.erase(Database.begin() + i);
-                    Havefood = 1;
+                    Database.erase(it);
+                    Havefood = true;
+                    cout<<"DA XOA MON AN!"<<endl;  
                     break;  
-                    cout<<"DA XOA MON AN!"<<endl;    
                 }
                 
                 
@@ -253,7 +211,7 @@ void QuanLy::XoaMon(){
                 cout<<"KHoong tim thay Id mon an"<<endl;
             }  
         );
-    };
+    );
 
 }
 /*
@@ -262,14 +220,13 @@ void QuanLy::XoaMon(){
  */
 void QuanLy::DanhSachMon(){
     uint8_t key;
-    if(Database.empty())
-    {
+    CHECK_ERROR
+    (
 
-        cout<<"DANH SACH MON AN TRONG!"<<endl;
-        cout<<"KHong the hien thi danh sach!"<<endl;
-    }
-    else
-    {
+        Database,
+        "DANH SACH MON AN TRONG!",
+        "KHong the hien thi danh sach!",
+
         DOWHILE_METHODMENU
         (
             printf("\n--------------------------DANH SACH MON AN---------------------------\n");
@@ -277,21 +234,21 @@ void QuanLy::DanhSachMon(){
                         uint8_t Stt = 1;
                         for (Food food : Database) 
                         {
-                            PRINT_INFORMATION(Stt, food);
+                            PRINT_LIST(Stt, food);
                             Stt++;
                         }
         );
-    };
+    );
 }
+
 /*
  * Function: ChuongTrinhQuanLy
  * Description: Chương trình của quản lý
  */
-void ChuongTrinhQuanLy(QuanLy *ql){
+void QuanLy::ChuongTrinhQuanLy(QuanLy *quanly){
 
     uint8_t key;
     int soban;
-    QuanLy *quanly = ql;
     do
     {
         printf("------QUAN LY------\n");
@@ -302,65 +259,39 @@ void ChuongTrinhQuanLy(QuanLy *ql){
         printf("5. Thiet lap so ban\n");
         printf("0. Thoat\n");
         printf("-------------------------------------------\n");
-        do
+    
+    ENTER_INFORMATION("Nhan Phim de tiep tuc: ", "%d", &key, key > 5 || key < 0);
+     switch ((Menu)key)
         {
-            printf("Nhan Phim de tiep tuc: ");
-            scanf("%d", &key);
-        } while (key > 5 || key < 0);
-        switch (key)
-        {
-        case 1:
-            ql->ThemMon();
+        case THEMMON:
+            ThemMon();
             break;
 
-        case 2:
-            ql->SuaMon();
+        case SUAMON:
+            SuaMon();
             break;
 
-        case 3:
-            ql->XoaMon();
+        case XOAMON:
+            XoaMon();
             break;
-        case 4:
-            ql->DanhSachMon();
-            break;
-
-        case 5:
-            printf("Nhap so luong ban: ");
-            scanf("%d",&soban);
-            ql->setSoBan(soban);
+        case DANHSACH:
+            DanhSachMon();
             break;
 
-        case 0:
+        case SOBAN:
+            setSoBan(soban);
+            break;
+
+        case OUT:
             return;
         
         default:
             break;
         }
-    } while (key);
-    
-}
-/*-----------------------------------------------------CLASS GOIMONAN--------------------------------------------------------*/
-/*
- * Function: Class GoiMonAn
- * Description: Quản lý thông tin những món đã được Order
- */
-class GoiMonAn{
-    private:
-        int SoLuong = 0;
-        char TenMon[20];
-        int Gia;
-        int Id;
-    public:
-        GoiMonAn(int id,const char tenmon[], const int gia, const int soluong);
+    }while (key);
+   
+}   
 
-        void setSoMonAn(const int Soluong);
-
-        int getSoMonAn();
-        char* getTenMonDuocGoi();
-        int getIdMonDuocGoi();
-        int getGiaMonDuocGoi();
-        
-};
 /*
  * Function: Constructor GoiMonAn
  * Description: Khởi tạo dữ liệu cho mỗi món ăn đã gọi
@@ -422,53 +353,40 @@ int GoiMonAn::getIdMonDuocGoi(){
 int GoiMonAn::getGiaMonDuocGoi(){
     return Gia;
 }
-
-/*-----------------------------------------------------CLASS BANAN--------------------------------------------------------*/
 /*
- * Function: Class BanAn
- * Description: Chứa Property & Method sử dụng cho class Employee
+ * Function: Constructor BanAn
+ * Description: Khởi tạo dữ liệu cho bàn ăn, Copy data danh sách món ăn của Quản lý đã tạo để gọi món
+ * Input:
+ *   quanly - QuanLy
  */
-class BanAn{
-    private :
-        int SoBanHienTai = 0;
-        int ThanhToan = 0;
-        vector<GoiMonAn> goimon;
-        vector<Food> copyfood;
-    public:
-        BanAn(QuanLy quanly);
-        void GoiMon();
-        void HienThiDSGoiMon();
-        void getThanhToan();
-        int getSoBanHienCo();
-        void CapNhatLaiMonAn(QuanLy quanly);
-};
-
 BanAn::BanAn(QuanLy quanly) {
     for(auto food : quanly.getListFood()){
         copyfood.push_back(food);
     }
 }
-
+/*
+ * Function: GoiMon
+ * Description: Gọi món ăn
+ */
 void BanAn::GoiMon(){
     uint8_t key;
     int id;
     int soluong = 0;
     bool Havefood = false;
 
+    CHECK_ERROR
+    (
 
-    if(copyfood.empty())
-    {
-        cout<<"DANH SACH MON AN TRONG!"<<endl;
-        cout<<"KHONG THE GOI MON!"<<endl;
+       copyfood,
+        "DANH SACH MON AN TRONG!",
+        "KHONG THE GOI MON!",
 
-    }else
-    {
         printf("\n-----------------DANH SACH MON AN------------\n");
                     printf("  STT\t| ID\t| Ten Mon\t|  Gia\n");
         uint8_t Stt = 1;           
         for (Food food : copyfood) 
         {
-            PRINT_INFORMATION(Stt, food);
+            PRINT_LIST(Stt, food);
             Stt++;
         }
 
@@ -477,20 +395,16 @@ void BanAn::GoiMon(){
             cout<<"--GOI MON AN!--"<<endl;
             cout <<"Nhap Id Mon an: ";
             cin>> id; 
-            for(int i = 0; i < copyfood.size(); i++){
+            for (auto it = copyfood.begin(); it != copyfood.end(); ++it){
 
-                if((copyfood.at(i)).getId() == id)
+                if(it->getId() == id)
                 {
-                    do
-                    {
-                        printf("Nhap so luong: ");
-                        scanf("%d", &soluong);
-                        
-                    } while (soluong < 0);
-                    GoiMonAn food((copyfood.at(i)).getId(), (copyfood.at(i)).getTenMon(), (copyfood.at(i)).getGia(), soluong);
+                    ENTER_INFORMATION("Nhap so luong: ", "%d", &soluong, soluong < 0);
+                   
+                    GoiMonAn food(it->getId(), it->getTenMon(), it->getGia(), soluong);
                         goimon.push_back(food);
                         SoBanHienTai = 1;
-                        Havefood = 1;
+                        Havefood = true;
                         break;
                 };
             };
@@ -499,20 +413,21 @@ void BanAn::GoiMon(){
                 printf("KHONG TIM THAY MON AN CAN GOI\n");
             }
         );
-    };
+    );
 }
-
+/*
+ * Function: Method HienThiDSGoiMon
+ * Description: Hiển thị món ăn đã gọi
+ */
 void BanAn::HienThiDSGoiMon(){
     uint8_t key;
     bool Havefood = false;
-    if(copyfood.empty())
-    {
-        cout<<"DANH SACH GOI MON TRONG!"<<endl;
-        cout<<"KHONG THE HIEN THI!"<<endl;
+    CHECK_ERROR
+    (
+        copyfood,
+        "DANH SACH GOI MON TRONG!",
+        "KHONG THE HIEN THI!",
 
-    }
-    else
-    {
         DOWHILE_METHODMENU
         (
             printf("\n---------------DANH SACH GOI MON AN------------\n");
@@ -524,21 +439,22 @@ void BanAn::HienThiDSGoiMon(){
                 Stt++;
             }
         );
-    }
+    );
 }
-
+/*
+ * Function: Method getThanhToan
+ * Description: Tính tổng tiền món ăn đã gọi
+ */
 void BanAn::getThanhToan(){
 
 
     uint8_t key;
     bool Havefood = false;
-    if(copyfood.empty())
-    {
-        cout<<"DANH SACH GOI MON TRONG!"<<endl;
-        cout<<"KHONG THE THANH TOAN!"<<endl;
-    }
-    else
-    {
+    CHECK_ERROR
+    (
+        copyfood,
+        "DANH SACH GOI MON TRONG!",
+        "KHONG THE THANH TOAN!",
         
         printf("\n---------------DANH SACH GOI MON AN------------\n");
                     printf("STT\t|  ID\t|  Ten Mon\t|  So Luong\n");
@@ -550,20 +466,29 @@ void BanAn::getThanhToan(){
         }
         DOWHILE_METHODMENU
         (
-            for(GoiMonAn orther : goimon){
+            for(GoiMonAn orther : goimon)
+            {
                 BanAn::ThanhToan +=   orther.getGiaMonDuocGoi() * orther.getSoMonAn();
-                cout<<"Tong thanh toan la : "<< ThanhToan<<(" VNĐ")<<endl;
+            }
+                cout<<"Tong thanh toan la : "<< ThanhToan<<(" VND")<<endl;
                 goimon.clear();
                 SoBanHienTai = 0;
-            }
         );
-    };
+    );
 }
-
-int BanAn::getSoBanHienCo(){
+/*
+ * Function: Method getSoBanHienCo
+ * Description: Lấy trạng thái của mỗi bàn, xem bàn đó đã có người ăn chưa 
+ * Output:
+ *   SoBanHienTai - bool 
+ */
+bool BanAn::getSoBanHienCo(){
     return SoBanHienTai;
 }
-
+/*
+ * Function: Method CapNhatLaiMonAn
+ * Description: Cập nhật danh sách món ăn khi Quản Lý thay đổi 
+ */
 void BanAn::CapNhatLaiMonAn(QuanLy quanly){
     copyfood.clear();
     for(auto data : quanly.getListFood())
@@ -571,22 +496,7 @@ void BanAn::CapNhatLaiMonAn(QuanLy quanly){
         copyfood.push_back(data);
     }
 }
-/*-----------------------------------------------------CLASS EMPLOYEE--------------------------------------------------------*/
-/*
- * Function: Class Nhân viên
- * Description: Chứa Property & Method sử dụng cho chương trình của nhân viên
- */
-class NhanVien{
-    private:
-        vector<BanAn> DanhSachBanAn;
-        int SoBanAn = 0;
-    public:
-        void HienThiDSBan();
-        void ChonBanAn(int choice);
-        int getSoBan();
-        void getDataTuQuanLy(QuanLy *quanly);
-        void CapNhatDataTuQuanLy(QuanLy *quanly);
-};
+
 /*
  * Function: Method getSoBan
  * Description: Lấy số bàn Quản lý đã setup
@@ -623,15 +533,18 @@ void NhanVien::CapNhatDataTuQuanLy(QuanLy *quanly){
 
     int SoBanConLai = NhanVien::SoBanAn;
     NhanVien::SoBanAn = quanly->getSoBan();
+     auto it = DanhSachBanAn.begin();
     for (int i = 0; i < SoBanAn; i++)
     {
         BanAn banan(*quanly);
-        DanhSachBanAn.at(i).CapNhatLaiMonAn(*quanly);//cập nhập thông tin danh sách món ăn
+        it->CapNhatLaiMonAn(*quanly);//cập nhập thông tin danh sách món ăn
+        ++it;
     }
     for (int i = SoBanConLai; i < NhanVien::SoBanAn; i++)
     {
         BanAn banan(*quanly);
         DanhSachBanAn.push_back(banan);// cập nhật thêm bàn từ quản lí nếu có set up thêm
+        ++it;
     }
 }
 /*
@@ -640,13 +553,12 @@ void NhanVien::CapNhatDataTuQuanLy(QuanLy *quanly){
  */
 void NhanVien::HienThiDSBan(){
     int key;
-    if(DanhSachBanAn.empty())
-    {
-        cout<<"Ban an chua duoc Quan Ly setup!\n";
-        cout<<"KHONG THE HIEN THI DANH SACH BAN AN!\n";
-    }
-    else
-    {
+    CHECK_ERROR
+    (
+        DanhSachBanAn,
+        "Ban an chua duoc Quan Ly setup!\n",
+        "KHONG THE HIEN THI DANH SACH BAN AN!\n",
+    
         printf("-------Trang thai ban------\n");
             printf("Ban:     |");
             for (int i = 1; i <= NhanVien::SoBanAn; i++)
@@ -654,16 +566,20 @@ void NhanVien::HienThiDSBan(){
                 printf(" %d |",i);
             }
             printf("\nT.Thai:  |");
+
+            auto it = DanhSachBanAn.begin();
             for (int i = 0; i < NhanVien::SoBanAn; i++)
             {
-                if(DanhSachBanAn.at(i).getSoBanHienCo() == 1){
+                if(it->getSoBanHienCo() == 1){
                     printf(" X |");
+                    ++it;
                 }else{
                     printf(" O |");
                 }
             }
-    }
+    );
 }
+
 /*
  * Function: Method ChonBanAn
  * Description: Lựa chọn bàn ăn và gọi món
@@ -672,44 +588,41 @@ void NhanVien::HienThiDSBan(){
  */
 void NhanVien::ChonBanAn(int choice){
     int key;
-    if(DanhSachBanAn.empty())
-    {
-        cout<<"Ban an chua duoc setup!\n";
-        cout<<"KHONG THE CHON BAN AN!\n";
-    }  
-    else
-    {
-
+   CHECK_ERROR
+   (
+        DanhSachBanAn,
+        "Ban an chua duoc setup!\n",
+        "KHONG THE CHON BAN AN!\n",
+    
+        auto it = DanhSachBanAn.begin();
+        advance(it, choice);// di chuyển đến vị trí choice
         printf("------BAN %d------\n",choice + 1);
         printf("1. Goi mon\n");
         printf("2. Danh sach mon da goi\n");
         printf("3. Tinh tien\n");
         printf("0. Thoat\n");
-        do
-        {
-            printf("Nhan Phim: ");
-            scanf("%d", &key);
-        }while (key > 3 || key < 0);
 
-        switch (key)
+        ENTER_INFORMATION("Nhan Phim: ", "%d", &key, key > 3 || key < 0);
+
+        switch ((Other)key)
         {
-        case 1:
-            DanhSachBanAn.at(choice).GoiMon();
+        case GOIMON:
+            it->GoiMon();
             break;
-        case 2:
-            DanhSachBanAn.at(choice).HienThiDSGoiMon();
+        case DANHSACHMON:
+            it->HienThiDSGoiMon();
             break;
-        case 3:
-            DanhSachBanAn.at(choice).getThanhToan();
+        case THANHTOAN:
+            it->getThanhToan();
             break;
-        case 0:
+        case EXIT:
             return;
         default:
             break;
         }
 
         
-    }
+   );
 }
 /*
  * Function: ChuongTrinhNhanVien
@@ -727,11 +640,7 @@ void ChuongTrinhNhanVien(NhanVien *nhanvien){
         nhanvien->HienThiDSBan();
         printf("\n0. Thoat\n");
         printf("-------------------------------------------\n");
-        do
-        {
-            printf("Chon Ban: ");
-            scanf("%d",&key);
-        } while (key > nhanvien->getSoBan()  || key < 0);
+        ENTER_INFORMATION("Chon Ban: ", "%d",&key ,key > nhanvien->getSoBan()  || key < 0 );
 
         switch (key)
         {
@@ -744,6 +653,7 @@ void ChuongTrinhNhanVien(NhanVien *nhanvien){
     } while (1);
     
 }
+
 /*
  * Function: ChuongTrinhMain
  * Description: Chương trình của Nhà Hàng Quản Lý
@@ -759,22 +669,19 @@ void ChuongTrinhMain(){
         printf("2. Nhan Vien\n");
         printf("0. Thoat\n");
         printf("-------------------------------------------\n");
-        do
+        ENTER_INFORMATION("Nhan Phim: ", "%d", &key, key > 2 || key < 0 );
+        
+        switch ((Restaurant)key)
         {
-            printf("Nhan Phim: ");
-            scanf("%d",&key);
-        } while (key > 2 || key < 0);
-        switch (key)
-        {
-        case 1:
-            ChuongTrinhQuanLy(&quanly);
+        case QUAN_LY:
+            quanly.ChuongTrinhQuanLy(&quanly);
             nhanvien.getDataTuQuanLy(&quanly);
             break;
-        case 2:
+        case NHAN_VIEN:
             nhanvien.CapNhatDataTuQuanLy(&quanly);
             ChuongTrinhNhanVien(&nhanvien);
             break;
-        case 0:
+        case THOAT:
             exit(0);
         
         default:
@@ -787,6 +694,7 @@ void ChuongTrinhMain(){
 /*-----------------------------------------------------MAIN--------------------------------------------------------*/
 int main(int argc, char const *argv[])
 {
+
     ChuongTrinhMain();
     
     
